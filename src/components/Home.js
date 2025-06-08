@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import TodoItem from "./TodoItem";
 import { getRandomTailwindBg } from "../constants/constants";
@@ -25,14 +25,13 @@ const Home = () => {
   const [todoArray, todoArraySetter] = useState(todoData);
 
   const deleteTodo = (todoId) => {
-    // console.log(todoId);
     const filterArray = todoArray.filter((each) => each.id !== todoId);
     todoArraySetter(filterArray);
   };
 
   const addTodo = () => {
     const last = userInput.trim().split(" ");
-    console.log(last);
+    const numberOdAddOns = last[last.length - 1];
     let newObject = {
       id: uuidv4(),
       todoText: userInput,
@@ -40,8 +39,7 @@ const Home = () => {
       isShowInput: false,
       backgroundColor: getRandomTailwindBg(),
     };
-    const numberOdAddOns = last[last.length - 1];
-    console.log(typeof parseInt(numberOdAddOns));
+
     if (!isNaN(parseInt(numberOdAddOns))) {
       let newObjectAdd = [];
       for (let i = 0; i < parseInt(numberOdAddOns); i++) {
@@ -54,19 +52,15 @@ const Home = () => {
         };
         newObjectAdd.push(newObject1);
       }
-      console.log(newObjectAdd);
       todoArraySetter((prev) => [...prev, ...newObjectAdd]);
     } else {
-      console.log("came hre");
       todoArraySetter((prev) => [...prev, newObject]);
     }
 
     inputSetter("");
-    // let newObject
   };
 
   const toggleInput = (todoId) => {
-    // console.log(todoId);
     const filterArray = todoArray.map((each) => {
       if (each.id === todoId) {
         return { ...each, isShowInput: !each.isShowInput };
@@ -74,12 +68,10 @@ const Home = () => {
         return { ...each };
       }
     });
-    console.log(filterArray);
     todoArraySetter(filterArray);
   };
 
   const onChangeInput = (todoId, changeText) => {
-    console.log("onChange", todoId, changeText);
     const filterArray = todoArray.map((each) => {
       if (each.id === todoId) {
         return {
@@ -96,26 +88,28 @@ const Home = () => {
   };
 
   return (
-    <div className="h-[1200px] flex flex-col items-center py-10 bg-gradient-to-r from-blue-500 to-purple-600">
-      <div className="bg-black flex flex-col items-center px-10 w-3/4 rounded-lg p-8 min-h-[800px]">
-        <h1 className="text-white text-3xl">What's Plan for Today ?</h1>
-        <div className="w-[40%] justify-between items-center flex  border-2 h-20 my-3 border-blue-500 rounded-lg">
+    <div className="min-h-screen flex flex-col items-center py-10 px-4 bg-gradient-to-r from-blue-500 to-purple-600">
+      <div className="bg-black flex flex-col items-center px-4 sm:px-10 w-full sm:w-3/4 rounded-lg py-8 min-h-[800px]">
+        <h1 className="text-white text-xl sm:text-3xl text-center mb-4">
+          What's Plan for Today?
+        </h1>
+        <div className="w-full sm:w-[40%] flex flex-col sm:flex-row justify-between items-center border-2 h-auto sm:h-20 my-3 border-blue-500 rounded-lg">
           <input
             value={userInput}
             onChange={(e) => inputSetter(e.target.value)}
             type="text"
             placeholder="Add a todo"
-            className="bg-transparent placeholder:px-3 h-[100%] w-3/4 text-white px-3 text-2xl"
+            className="bg-transparent placeholder:px-3 w-full sm:w-3/4 h-[50px] sm:h-full text-white px-3 text-lg sm:text-2xl"
           />
           <button
-            className="bg-gradient-to-r from-blue-500 to-purple-600 text-white h-[100%] p-3 w-1/4"
+            className="bg-gradient-to-r from-blue-500 to-purple-600 text-white h-[50px] sm:h-full w-full sm:w-1/4 text-lg sm:text-xl"
             onClick={addTodo}
           >
             Add Todo
           </button>
         </div>
-        <ul className="w-[80%] flex items-center flex-col overflow-y-auto h-[100%] p-30">
-          {todoArray.map((eachTodo, index) => (
+        <ul className="w-full sm:w-[80%] flex items-center flex-col overflow-y-auto h-full p-4 sm:p-8 gap-4">
+          {todoArray.map((eachTodo) => (
             <TodoItem
               key={eachTodo.id}
               todoData={eachTodo}
