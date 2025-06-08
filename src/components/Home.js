@@ -32,32 +32,34 @@ const Home = () => {
   const addTodo = () => {
     const last = userInput.trim().split(" ");
     const numberOdAddOns = last[last.length - 1];
-    let newObject = {
-      id: uuidv4(),
-      todoText: userInput,
-      editedCount: 0,
-      isShowInput: false,
-      backgroundColor: getRandomTailwindBg(),
-    };
+    if (userInput !== " " && userInput !== "") {
+      let newObject = {
+        id: uuidv4(),
+        todoText: userInput,
+        editedCount: 0,
+        isShowInput: false,
+        backgroundColor: getRandomTailwindBg(),
+      };
 
-    if (!isNaN(parseInt(numberOdAddOns))) {
-      let newObjectAdd = [];
-      for (let i = 0; i < parseInt(numberOdAddOns); i++) {
-        let newObject1 = {
-          id: uuidv4(),
-          todoText: userInput,
-          editedCount: 0,
-          isShowInput: false,
-          backgroundColor: getRandomTailwindBg(),
-        };
-        newObjectAdd.push(newObject1);
+      if (!isNaN(parseInt(numberOdAddOns))) {
+        let newObjectAdd = [];
+        for (let i = 0; i < parseInt(numberOdAddOns); i++) {
+          let newObject1 = {
+            id: uuidv4(),
+            todoText: userInput,
+            editedCount: 0,
+            isShowInput: false,
+            backgroundColor: getRandomTailwindBg(),
+          };
+          newObjectAdd.push(newObject1);
+        }
+        todoArraySetter((prev) => [...prev, ...newObjectAdd]);
+      } else {
+        todoArraySetter((prev) => [...prev, newObject]);
       }
-      todoArraySetter((prev) => [...prev, ...newObjectAdd]);
-    } else {
-      todoArraySetter((prev) => [...prev, newObject]);
-    }
 
-    inputSetter("");
+      inputSetter("");
+    }
   };
 
   const toggleInput = (todoId) => {
